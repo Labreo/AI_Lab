@@ -10,7 +10,7 @@ def dfs(s, graph, n):
         if not visited[u]:
             visited[u] = True
             print(u, end=" ")
-            for v in reversed(graph[u]):
+            for v in graph[u][::-1]:
                 if not visited[v]:
                     S.append(v)
     print()
@@ -22,7 +22,7 @@ def checkpath(s,target,graph,n):
         u = S.pop()
         if not visited[u]:
             visited[u] = True
-            for v in reversed(graph[u]):
+            for v in graph[u][::-1]:
                 if not visited[v]:
                     S.append(v)
     if visited[target]:
@@ -37,7 +37,7 @@ def noofconnectedverticestonode(s,graph,n):
         u = S.pop()
         if not visited[u]:
             visited[u] = True
-            for v in reversed(graph[u]):
+            for v in graph[u][::-1]:
                 if not visited[v]:
                     S.append(v)
     return visited.count(True)-1

@@ -1,27 +1,66 @@
-from collections import defaultdict
+from collections import defaultdict,deque
 
-def dfs(source, graph, n):
-
+def dfs(s, graph, n):
     visited = [False] * (n + 1)
-    S = []
-    S.append(source)
+    S = [s]
     
-    print("dfs Traversal:", end=" ")
+    print("DFS Traversal:", end=" ")
     while S:
         u = S.pop()
-       
         if not visited[u]:
             visited[u] = True
             print(u, end=" ")
-            for v in range(n,-1,-1):
-                if visited[v]==False:
-                   S.append(v)
-    print(S)
+            for v in reversed(graph[u]):
+                if not visited[v]:
+                    S.append(v)
+    print()
+
+def checkpath(s,target,graph,n):
+    visited = [False] * (n + 1)
+    S = [s]
+    while S:
+        u = S.pop()
+        if not visited[u]:
+            visited[u] = True
+            for v in reversed(graph[u]):
+                if not visited[v]:
+                    S.append(v)
+    if visited[target]:
+        return True
+    else:
+        return False
+
+def noofconnectedverticestonode(s,graph,n):
+    visited = [False] * (n + 1)
+    S = [s]
+    while S:
+        u = S.pop()
+        if not visited[u]:
+            visited[u] = True
+            for v in reversed(graph[u]):
+                if not visited[v]:
+                    S.append(v)
+    return visited.count(True)-1
 
 
+def distancebetweentwonodes(s, target, graph, n):
+    visited = [False] * (n + 1)
+    visited[s] = True
+    q = deque([(s, 0)])
+    
+    while q:
+        u, d = q.popleft()
+        if u == target:
+            print(f"the distance between {s} and {target} is {d}")
+            return
+        for v in graph[u]:
+            if not visited[v]:
+                visited[v] = True
+                q.append((v, d + 1))
+    print(f"No path exists between {s} and {target}")
 
-
-
+    
+        
 
 
 def main():
@@ -31,7 +70,18 @@ def main():
         u, v = map(int, input(f"Edge {i+1} (u v): ").split())
         graph[u].append(v)
         graph[v].append(u)
-    dfs(int(input("Source vertex: ")), graph, n)
-
+    dfs(int(input("s vertex: ")), graph, n)
+    print("\nInput for checking path existance:")
+    s=int(input("s vertex: "))
+    t=int(input("target vertex: "))
+    print(checkpath(s, t, graph, n))
+    print("\nInput for checking no of connected vertices to a node:")
+    s=int(input("s vertex: "))
+    print(noofconnectedverticestonode(s, graph, n))
+    print("\nInput for checking distance between two nodes:")
+    s=int(input("s vertex: "))
+    t=int(input("target vertex: "))
+    distancebetweentwonodes(s, t, graph, n)
+    
 if __name__ == "__main__":
     main()

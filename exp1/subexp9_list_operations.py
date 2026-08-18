@@ -1,86 +1,56 @@
-"""
-Sub-experiment 9: Interactive Menu for List Operations
-"""
+"""Sub-experiment 9: Interactive Menu for List Operations"""
 
 def main():
-    fruits = ["Apple", "Banana", "Cherry"]
+    items = ["Apple", "Banana", "Cherry"]
+    menu = (
+        "\n=== LIST OPERATIONS ===\n"
+        "1. Append  | 2. Insert  | 3. Remove | 4. Pop\n"
+        "5. Merge   | 6. Slice   | 7. Sort   | 8. Reverse\n"
+        "9. Reset   | 0. Exit"
+    )
     
     while True:
-        print("\n=============================================")
-        print("     SUB-EXPERIMENT 9: LIST OPERATIONS       ")
-        print("=============================================")
-        print(f"Current List: {fruits}")
-        print("---------------------------------------------")
-        print("1. Append an element (append)")
-        print("2. Insert an element at index (insert)")
-        print("3. Remove an element by value (remove)")
-        print("4. Pop an element by index (pop)")
-        print("5. Merge with another list (+ / extend)")
-        print("6. Slice the list")
-        print("7. Sort the list")
-        print("8. Reverse the list")
-        print("9. Reset list to default")
-        print("0. Exit to Main Menu")
-        print("=============================================")
-        
-        choice = input("Enter choice (0-9): ").strip()
+        print(f"{menu}\nCurrent List: {items}")
+        choice = input("Choice (0-9): ").strip()
         
         if choice == '0':
-            print("Exiting List Operations.")
             break
         elif choice == '1':
-            item = input("Enter element to append: ").strip()
-            fruits.append(item)
-            print(f"Updated List: {fruits}")
+            items.append(input("Item to append: ").strip())
         elif choice == '2':
             try:
-                idx = int(input(f"Enter index (0 to {len(fruits)}): "))
-                item = input("Enter element to insert: ").strip()
-                fruits.insert(idx, item)
-                print(f"Updated List: {fruits}")
+                idx = int(input(f"Index (0 to {len(items)}): "))
+                items.insert(idx, input("Item to insert: ").strip())
             except ValueError:
-                print("Invalid index format!")
+                print("Invalid index!")
         elif choice == '3':
-            item = input("Enter element value to remove: ").strip()
-            if item in fruits:
-                fruits.remove(item)
-                print(f"Updated List: {fruits}")
-            else:
-                print(f"'{item}' not found in list!")
+            val = input("Item value to remove: ").strip()
+            items.remove(val) if val in items else print(f"'{val}' not in list!")
         elif choice == '4':
-            if not fruits:
+            if not items:
                 print("List is empty!")
                 continue
             try:
-                idx = int(input(f"Enter index to pop (0 to {len(fruits)-1}): "))
-                popped = fruits.pop(idx)
-                print(f"Popped '{popped}'. Updated List: {fruits}")
+                print(f"Popped: {items.pop(int(input(f'Index (0 to {len(items)-1}): ')))}")
             except (ValueError, IndexError):
                 print("Invalid index!")
         elif choice == '5':
-            new_items = input("Enter items to merge (comma-separated, e.g. Mango, Orange): ").strip()
-            if new_items:
-                second_list = [x.strip() for x in new_items.split(',')]
-                fruits = fruits + second_list
-                print(f"Merged List: {fruits}")
+            raw = input("Items to merge (comma-separated): ").strip()
+            items += [x.strip() for x in raw.split(',') if x.strip()]
         elif choice == '6':
             try:
-                start = int(input("Enter start index: "))
-                end = int(input("Enter end index: "))
-                print(f"Sliced List [{start}:{end}]: {fruits[start:end]}")
+                s, e = int(input("Start index: ")), int(input("End index: "))
+                print(f"Slice [{s}:{e}]: {items[s:e]}")
             except ValueError:
-                print("Invalid indices!")
+                print("Invalid slice indices!")
         elif choice == '7':
-            fruits.sort()
-            print(f"Sorted List: {fruits}")
+            items.sort()
         elif choice == '8':
-            fruits.reverse()
-            print(f"Reversed List: {fruits}")
+            items.reverse()
         elif choice == '9':
-            fruits = ["Apple", "Banana", "Cherry"]
-            print(f"List reset to: {fruits}")
+            items = ["Apple", "Banana", "Cherry"]
         else:
-            print("Invalid choice! Please select between 0 and 9.")
+            print("Invalid choice!")
 
 if __name__ == "__main__":
     main()

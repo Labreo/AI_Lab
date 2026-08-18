@@ -1,33 +1,27 @@
-from collections import defaultdict
-from collections import deque
+"""Experiment 2: Breadth First Search (BFS) Graph Traversal"""
+from collections import defaultdict, deque
 
-def bfs(S,graph,n):
-    visted = [False] * (n + 1)
-    Q = deque()
-    Q.append(S)
-    visted[S] = True
-
-    while Q:
-        u = Q.popleft()
+def bfs(source, graph, n):
+    visited, q = [False] * (n + 1), deque([source])
+    visited[source] = True
+    print("BFS Traversal:", end=" ")
+    while q:
+        u = q.popleft()
         print(u, end=" ")
         for v in graph[u]:
-            if not visted[v]:
-                visted[v] = True
-                Q.append(v)
+            if not visited[v]:
+                visited[v] = True
+                q.append(v)
+    print()
 
 def main():
-    n = int(input("No of vertices:"))
-    e = int(input("No of edges:"))
-    
+    n, e = int(input("No of vertices: ")), int(input("No of edges: "))
     graph = defaultdict(list)
     for i in range(e):
-        u, v = map(int, input(f"Enter edge {i+1} (u v separated by space): ").split())
+        u, v = map(int, input(f"Edge {i+1} (u v): ").split())
         graph[u].append(v)
         graph[v].append(u)
-    
-    S = int(input("Enter the source vertex:"))
-    bfs(S, graph, n)
-
+    bfs(int(input("Source vertex: ")), graph, n)
 
 if __name__ == "__main__":
     main()

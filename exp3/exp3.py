@@ -46,19 +46,23 @@ def noofconnectedverticestonode(s,graph,n):
 def distancebetweentwonodes(s, target, graph, n):
     visited = [False] * (n + 1)
     visited[s] = True
-    q = deque([(s, 0)])
-    
+    q = deque([s])
+    d = 0
     while q:
-        u, d = q.popleft()
-        if u == target:
-            print(f"the distance between {s} and {target} is {d}")
-            return
+
+        u= q.popleft()
+
+
         for v in graph[u]:
             if not visited[v]:
-                visited[v] = True
-                q.append((v, d + 1))
-    print(f"No path exists between {s} and {target}")
+                if u == target:
+                    print(f"the distance between {s} and {target} is {d-1}")
 
+                else:
+                    d=d+1   
+                    visited[v] = True
+                    q.append(v)
+                    
     
         
 

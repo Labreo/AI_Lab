@@ -19,14 +19,16 @@ def bfs_search(source, target, graph, n):
     return -1
 
 def main():
-    n, e = int(input("No of vertices: ")), int(input("No of edges: "))
+    n = int(input("No of vertices: "))
+    print(f"Enter the {n}x{n} adjacency matrix (row by row):")
+    matrix = [list(map(int, input().split())) for _ in range(n)]
     graph = defaultdict(list)
-    for i in range(e):
-        u, v = map(int, input(f"Edge {i+1} (u v): ").split())
-        graph[u].append(v)
-        graph[v].append(u)
-    target = int(input("Search node: "))
+    for i in range(n):
+        for j in range(n):
+            if matrix[i][j] == 1:
+                graph[i].append(j)
     source = int(input("Source vertex: "))
+    target = int(input("Search node: "))
     d = bfs_search(source, target, graph, n)
     print(f"Distance from {source} to {target}: {d}")
 

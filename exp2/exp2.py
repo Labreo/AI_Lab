@@ -48,20 +48,19 @@ def main():
         print("3. Exit")
         choice = input("Enter your choice (1-3): ").strip()
 
-        match choice:
-            case "1":
-                source = int(input("Source vertex: "))
-                bfs(source, graph, n)
-            case "2":
-                source = int(input("Source vertex: "))
-                target = int(input("Search node: "))
-                d = bfs_search(source, target, graph, n)
-                print(f"Distance from {source} to {target}: {d}")
-            case "3":
-                print("Exiting...")
-                break
-            case _:
-                print("Invalid choice! Please choose 1, 2, or 3.")
+        if choice == "1":
+            source = int(input("Source vertex: "))
+            bfs(source, graph, n)
+        elif choice == "2":
+            source = int(input("Source vertex: "))
+            target = int(input("Search node: "))
+            d = bfs_search(source, target, graph, n)
+            print(f"Distance from {source} to {target}: {d}")
+        elif choice == "3":
+            print("Exiting...")
+            break
+        else:
+            print("Invalid choice! Please choose 1, 2, or 3.")
 
 if __name__ == "__main__":
     main()

@@ -17,9 +17,8 @@ def best_first_search(graph, heuristics, s, G):
             while curr is not None:
                 path.append(curr)
                 curr = parent[curr]
-
             
-            print("Path:", path[::-1])
+            print("The path between those cities is:", path[::-1])
             return path
             
         closed.add(n)
@@ -34,23 +33,23 @@ def best_first_search(graph, heuristics, s, G):
     return None
 
 def main():
-    n = int(input("No of vertices: "))
+    n = int(input("No of cities: "))
     heuristics = {}
-    print("Enter heuristic values (node heuristic):")
+    print("Enter heuristic values (city heuristic):")
     for _ in range(n):
-        node, h = input().split()
-        heuristics[node] = int(h)
+        city, h = input().split()
+        heuristics[city] = int(h)
         
-    e = int(input("No of edges: "))
+    e = int(input("No of paths between cities: "))
     graph = defaultdict(list)
-    print("Enter edges (u v):")
+    print("Enter paths between cities (City_1 City_2):")
     for _ in range(e):
         u, v = input().split()
         graph[u].append(v)
         graph[v].append(u)
         
-    s = input("s node: ")
-    G = input("G node: ")
+    s = input("Enter starting city: ")
+    G = input("Enter destination city: ")
     
     best_first_search(graph, heuristics, s, G)
 

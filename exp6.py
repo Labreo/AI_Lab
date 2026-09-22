@@ -2,7 +2,7 @@ def evaluation_function(x):
     return -(x**2) + 5
 
 def hill_climbing(start_x, step_size=0.1):
-    current_x = round(start_x, 4)
+    current_x = round(start_x)
     current_val = evaluation_function(current_x)
     
     step = 0

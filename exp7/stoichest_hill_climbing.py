@@ -3,7 +3,7 @@ import random
 def evaluation_function(x1, x2):
     return -(x1**2) - (x2**2) + 5
 
-def stoishtic_hill_climbing(start_x1, start_x2, step_size=0.1):
+def stoishtic_hill_climbing(start_x1, start_x2, step_size=0.1, threshold=5.0):
     current_x1 = round(start_x1, 4)
     current_x2 = round(start_x2, 4)
     current_val = evaluation_function(current_x1, current_x2)
@@ -21,7 +21,7 @@ def stoishtic_hill_climbing(start_x1, start_x2, step_size=0.1):
                 if next_x1 == current_x1 and next_x2 == current_x2:
                     continue
                 next_val = evaluation_function(next_x1, next_x2)
-                if next_val > current_val:
+                if next_val > current_val and next_val <= threshold:
                     temp.append((next_val, next_x1, next_x2))
 
         if len(temp) == 0:
@@ -42,8 +42,9 @@ def stoishtic_hill_climbing(start_x1, start_x2, step_size=0.1):
 def main():
     start_input1 = float(input("Enter starting value of x1: "))
     start_input2 = float(input("Enter starting value of x2: "))
-    step_size = float(input("Enter your step size"))
-    peak_x, peak_y, peak_val = stoishtic_hill_climbing(start_input1, start_input2,step_size)
+    step_size = float(input("Enter your step size: "))
+    threshold = float(input("Enter your threshold: "))
+    peak_x, peak_y, peak_val = stoishtic_hill_climbing(start_input1, start_input2, step_size, threshold)
     
     print("-" * 45)
     print(f"Optimal x1: {peak_x:.2f}") 

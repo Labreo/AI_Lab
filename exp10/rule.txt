@@ -1,0 +1,87 @@
+18 ?- consult('/Users/sanjaywaradkar/AI_Lab/exp10/rule.pl').
+true.
+
+19 ?- happy(lili).
+ERROR: Unknown procedure: dances/1
+ERROR: In:
+ERROR:   [13] dances(lili)
+ERROR:   [11] toplevel_call(user:user: ...) at /opt/homebrew/Cellar/swi-prolog/10.0.2/lib/swipl/boot/toplevel.pl:1529
+ERROR: 
+ERROR: Note: some frames are missing due to last-call optimization.
+ERROR: Re-run your program in debug mode (:- debug.) to get more detail.
+   Exception: (13) dances(lili) ? Unknown option (h for help)
+   Exception: (13) dances(lili) ? Trace commands:
++                 set spy point         | -              clear spy point
+/c|e|r|f|u|a goal find goal at port     | .              repeat find
+a                 abort to toplevel     | A              alternatives
+b                 break (new toplevel)  | c (ret, space) creep to next port
+[depth] d         depth for printing    | e              exit Prolog
+f                 make goal fail        | [depth] g      backtrace (-N from top)
+h (?)             help                  | i              ignore current goal
+l                 leap to spy point     | L              list current goal
+[level] r         retry goal [at level] | s              skip over
+[level] S         save goal [at level]  | u              up (complete goal)
+p                 print goals           | w              (quoted) write goals
+m                 exception details     | C              toggle show context
+   Exception: (13) dances(lili) ? No previous search
+   Exception: (13) dances(lili) ? creep
+20 ?- consult('/Users/sanjaywaradkar/AI_Lab/exp10/rule.pl').
+true.
+
+21 ?- happy(lili).
+true.
+
+22 ?- search_for_food(tom).
+true.
+
+23 ?- hungry(tom).
+true.
+
+24 ?- riends(jack, bili)/
+|    ç^C
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? ^C
+
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? Options:
+a:           abort         b:           break
+c:           continue      e:           exit
+g:           goals         s:           C-backtrace
+t:           trace         p:             Show PID
+h (?):       help
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? Unknown option (h for help)
+Action (h for help) ? abort
+EOF: exit (status 4)
+(base) sanjaywaradkar@Sanjays-MacBook-Air-2 AI_Lab % 
+(base) sanjaywaradkar@Sanjays-MacBook-Air-2 AI_Lab % swipl
+Welcome to SWI-Prolog (threaded, 64 bits, version 10.0.2)
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software.
+Please run ?- license. for legal details.
+
+For online help and background, visit https://www.swi-prolog.org
+For built-in help, use ?- help(Topic). or ?- apropos(Word).
+
+24 ?- consult('/Users/sanjaywaradkar/AI_Lab/exp10/rule.pl').
+true.
+
+25 ?- happy(lili).
+true.
+
+26 ?- hungry(tom).
+true.
+
+27 ?- friends(jack, bili).
+true.
+
+28 ?- goToPlay(ryan).
+true.
+
+29 ?- consult('/Users/sanjaywaradkar/AI_Lab/exp10/rule.pl').
+true.
+
+30 ?- likes(priya,jaya).
+true.
+
+31 ?- 

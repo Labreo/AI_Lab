@@ -1,0 +1,35 @@
+(base) sanjaywaradkar@Sanjays-MacBook-Air-2 AI_Lab % swipl
+Welcome to SWI-Prolog (threaded, 64 bits, version 10.0.2)
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software.
+Please run ?- license. for legal details.
+
+For online help and background, visit https://www.swi-prolog.org
+For built-in help, use ?- help(Topic). or ?- apropos(Word).
+
+32 ?- consult('/Users/sanjaywaradkar/AI_Lab/exp10/can_cook.pl').
+true.
+
+32 ?- can_cook(X).
+X = priya .
+
+33 ?- can_cook(X).
+X = priya 
+Unknown action: , (h for help)
+Action? 
+Unknown action:  for help)
+Action? 
+Unknown action: [ (h for help)
+Action? 
+Unknown action: A (h for help)
+Action? .
+
+33 ?- can_cook(X).
+X = priya ;
+X = jaya ;
+X = tiyasha.
+
+33 ?- likes(priya,X).
+X = jaya ;
+X = tiyasha.
+
+34 ?- 

@@ -1,0 +1,52 @@
+(base) sanjaywaradkar@Sanjays-MacBook-Air-2 AI_Lab % swip
+zsh: command not found: swip
+(base) sanjaywaradkar@Sanjays-MacBook-Air-2 AI_Lab % swipl
+Welcome to SWI-Prolog (threaded, 64 bits, version 10.0.2)
+SWI-Prolog comes with ABSOLUTELY NO WARRANTY. This is free software.
+Please run ?- license. for legal details.
+
+For online help and background, visit https://www.swi-prolog.org
+For built-in help, use ?- help(Topic). or ?- apropos(Word).
+
+4 ?- consulate('/Users/sanjaywaradkar/AI_Lab/exp10/fact.pl').
+ERROR: Unknown procedure: consulate/1 (DWIM could not correct goal)
+5 ?- consult('/Users/sanjaywaradkar/AI_Lab/exp10/fact.pl').
+true.
+
+6 ?- cat(tom).
+true.
+
+7 ?- cat(pat).
+false.
+
+8 ?- consult('/Users/sanjaywaradkar/AI_Lab/exp10/fact.pl').
+true.
+
+9 ?- loves_to_eat(kunal,pasta).
+true.
+
+10 ?- loves_to_eat(kunal,maggi).
+false.
+
+11 ?- loves(kunal,pasta).
+ERROR: Unknown procedure: loves/2 (DWIM could not correct goal)
+12 ?- loves_to_eat(kunal,X).
+X = pasta.
+
+13 ?- loves_to_eat(Y,pasta).
+Y = kunal.
+
+14 ?- loves_to_eat(X,Y).
+X = kunal,
+Y = pasta.
+
+15 ?- of_color(hair,black).
+true.
+
+16 ?- loves_to_play_games(nawaz).
+true.
+
+17 ?- lazy(pratyusha).
+true.
+
+18 ?- 

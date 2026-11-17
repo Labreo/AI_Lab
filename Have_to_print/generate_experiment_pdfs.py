@@ -278,6 +278,16 @@ def build_experiment(pdf_name, script, inputs=()):
     code_pages = [(render_code_single_column(''.join(chunk).rstrip('\n'), font_size=20, line_height=30, lexer=lexer), False)
                   for chunk in paginate_code(lines)]
 
+    # Pad every code page to the widest one so the font size matches across pages.
+    if len(code_pages) > 1:
+        max_w = max(img.width for img, _ in code_pages)
+        padded = []
+        for img, two in code_pages:
+            canvas = Image.new('RGB', (max_w, img.height), (255, 255, 255))
+            canvas.paste(img, (0, 0))
+            padded.append((canvas, two))
+        code_pages = padded
+
     if script.endswith('.pl'):
         term = run_prolog_session(script, list(inputs))
     else:
@@ -292,9 +302,12 @@ def build_experiment(pdf_name, script, inputs=()):
 # Experiment number -> (output PDF, program, scripted stdin).
 # Same layout as the DAA lab files: GEC header, syntax-highlighted code, terminal output.
 EXPERIMENTS = {
-    9: ('exp9/exp9.pdf', 'exp9/exp9.py',
-        ['1 2 3', '_ 4 6', '7 5 8',      # initial state
-         '1 2 3', '4 5 6', '7 8 _']),    # goal state
+    # Two programs -> two separate PDFs (list of configs)
+    7: [('exp7/steepest_descent.pdf', 'exp7/steepest_descent.py',
+         ['2', '3', '0.5']),             # x1, x2, step size
+        ('exp7/stochastic_hill_climbing.pdf', 'exp7/stoichest_hill_climbing.py',
+         ['2', '3', '0.5', '5'])],       # x1, x2, step size, threshold
+    9: ('exp9/exp9.pdf', 'exp9/hill8puzzle.py', []),   # no stdin: start/goal are hard-coded
     # Prolog: answers typed at the ?- and |: prompts of an interactive swipl session
     10: ('exp10/exp10_code_output.pdf', 'exp10/expert_system.pl',
          ['go.', 'yes.', 'yes.', 'yes.', 'no.', 'yes.',                    # -> tiger
@@ -311,7 +324,9 @@ def main():
     wanted = [int(a) for a in sys.argv[1:]] or sorted(EXPERIMENTS)
     for n in wanted:
         if n in EXPERIMENTS:
-            build_experiment(*EXPERIMENTS[n])
+            cfg = EXPERIMENTS[n]
+            for c in (cfg if isinstance(cfg, list) else [cfg]):
+                build_experiment(*c)
         else:
             print(f'Experiment {n}: not configured, skipped')
 

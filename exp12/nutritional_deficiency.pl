@@ -34,6 +34,24 @@ hypothesis(vitamin_a_deficiency) :-
 hypothesis(calcium_deficiency) :-
     ask('Do you get frequent muscle cramps'),
     ask('Are your nails brittle').
+hypothesis(iodine_deficiency) :-
+    ask('Do you have noticeable swelling in the front of your neck'),
+    ask('Do you experience unexpected weight gain and extreme cold sensitivity').
+hypothesis(zinc_deficiency) :-
+    ask('Have you experienced a loss of taste or smell'),
+    ask('Are you having excessive hair loss or slow skin wound repair').
+hypothesis(magnesium_deficiency) :-
+    ask('Do you experience involuntary muscle twitches or eye spasms'),
+    ask('Do you suffer from restless sleep, anxiety or irregular heartbeats').
+hypothesis(potassium_deficiency) :-
+    ask('Do you feel abnormal heart palpitations or fluttering'),
+    ask('Do you suffer from persistent severe muscle cramps and abdominal bloating').
+hypothesis(folate_deficiency) :-
+    ask('Do you have painful mouth ulcers or a swollen red tongue'),
+    ask('Do you experience persistent breathlessness and severe mental fatigue').
+hypothesis(protein_deficiency) :-
+    ask('Do you have swelling or fluid retention in your feet or legs'),
+    ask('Are you experiencing visible muscle wasting and peeling skin').
 
 % Dietary recommendation for each deficiency.
 advice(iron_deficiency) :-
@@ -52,6 +70,24 @@ advice(vitamin_a_deficiency) :-
 advice(calcium_deficiency) :-
     step('Eat milk, curd, cheese, ragi and green leafy vegetables.'),
     step('Combine with vitamin D for better absorption.').
+advice(iodine_deficiency) :-
+    step('Use iodized salt in everyday cooking and meal preparation.'),
+    step('Consume saltwater fish, seaweed, dairy products and eggs.').
+advice(zinc_deficiency) :-
+    step('Eat pumpkin seeds, nuts, chickpeas, lentils and whole grains.'),
+    step('Include shellfish, lean poultry and zinc-fortified breakfast cereals.').
+advice(magnesium_deficiency) :-
+    step('Eat almonds, cashews, pumpkin seeds, dark chocolate and spinach.'),
+    step('Consider drinking mineral-rich water and taking warm Epsom salt baths.').
+advice(potassium_deficiency) :-
+    step('Eat bananas, coconut water, sweet potatoes, avocados and oranges.'),
+    step('Check with a physician regarding any diuretic medicines or electrolyte balance.').
+advice(folate_deficiency) :-
+    step('Eat dark green leafy vegetables, broccoli, asparagus, peas and kidney beans.'),
+    step('Take folic acid supplements as prescribed, particularly during pregnancy.').
+advice(protein_deficiency) :-
+    step('Eat protein-dense foods: lentils, paneer, tofu, eggs, chicken and beans.'),
+    step('Ensure an adequate protein portion is distributed across all daily meals.').
 
 step(Text) :-
     format('  - ~w~n', [Text]).

@@ -33,6 +33,24 @@ hypothesis(glaucoma) :-
     ask('Do you have eye pain or loss of side vision').
 hypothesis(stye) :-
     ask('Is there a red, painful lump on the eyelid').
+hypothesis(corneal_abrasion) :-
+    ask('Did something scratch, hit or enter your eye'),
+    ask('Do you experience intense eye pain and light sensitivity').
+hypothesis(blepharitis) :-
+    ask('Are your eyelid margins swollen, flaky or crusted with dandruff-like flakes'),
+    ask('Do your eyelashes stick together upon waking').
+hypothesis(subconjunctival_hemorrhage) :-
+    ask('Is there a bright red patch of blood on the white of your eye'),
+    ask('Is there no pain and no change in your vision').
+hypothesis(diabetic_retinopathy) :-
+    ask('Do you have a history of diabetes'),
+    ask('Are you noticing fluctuating vision, dark spots or floating cobwebs').
+hypothesis(color_blindness) :-
+    ask('Do you have difficulty distinguishing between red and green or blue and yellow'),
+    ask('Has this color confusion been present since childhood').
+hypothesis(retinal_detachment) :-
+    ask('Did you suddenly see a shower of floaters or flashes of light'),
+    ask('Is there a dark curtain or shadow spreading across your visual field').
 
 % Advice for each condition.
 advice(conjunctivitis) :-
@@ -53,6 +71,24 @@ advice(glaucoma) :-
 advice(stye) :-
     step('Apply a warm compress for 10 minutes, 3 to 4 times a day.'),
     step('Do not squeeze it; see a doctor if it does not clear in a week.').
+advice(corneal_abrasion) :-
+    step('Do not rub the eye and avoid wearing contact lenses.'),
+    step('Rinse gently with saline solution and consult an eye specialist promptly.').
+advice(blepharitis) :-
+    step('Clean eyelid margins daily with diluted baby shampoo or eyelid wipes.'),
+    step('Apply a warm compress for 5 to 10 minutes to unblock eyelid oil glands.').
+advice(subconjunctival_hemorrhage) :-
+    step('Reassure yourself: this usually resolves spontaneously in 1 to 2 weeks.'),
+    step('Check blood pressure and see a doctor if it recurs frequently.').
+advice(diabetic_retinopathy) :-
+    step('Maintain tight control over blood glucose and blood pressure levels.'),
+    step('Schedule an immediate dilated fundus examination with a retina specialist.').
+advice(color_blindness) :-
+    step('Undergo formal Ishihara color testing with an optometrist.'),
+    step('Consider color-filtering lenses or digital assistive accessibility tools.').
+advice(retinal_detachment) :-
+    step('Emergency: seek hospital ophthalmic casualty care immediately.'),
+    step('Keep head posture stable and avoid strenuous physical activity.').
 
 step(Text) :-
     format('  - ~w~n', [Text]).

@@ -27,21 +27,21 @@ active        :- ask('Do you already exercise 3 or more times a week').
 joint_problem :- ask('Do you have knee, back or joint pain').
 
 % Rules: goal + capability -> exercise.
-exercise(brisk_walking) :- goal(weight_loss), \+ active.
-exercise(running)       :- goal(weight_loss), active, \+ joint_problem.
-exercise(swimming)      :- ( goal(weight_loss) ; goal(endurance) ), joint_problem.
-exercise(cycling)       :- goal(endurance), \+ joint_problem.
-exercise(bodyweight_exercises) :- goal(muscle_gain), \+ active.
-exercise(weight_training)      :- goal(muscle_gain), active, \+ joint_problem.
-exercise(resistance_bands)     :- goal(muscle_gain), joint_problem.
-exercise(yoga)       :- goal(flexibility).
-exercise(stretching) :- goal(flexibility), joint_problem.
-exercise(pilates)         :- goal(core_stability), \+ joint_problem.
-exercise(chair_exercises) :- goal(core_stability), joint_problem.
-exercise(tai_chi)         :- ( goal(flexibility) ; goal(stress_relief) ), joint_problem.
+exercise(brisk_walking)             :- goal(weight_loss), \+ active.
+exercise(running)                   :- goal(weight_loss), active.
+exercise(swimming)                  :- goal(endurance), joint_problem.
+exercise(cycling)                   :- goal(endurance), \+ joint_problem.
+exercise(bodyweight_exercises)      :- goal(muscle_gain), \+ active.
+exercise(weight_training)           :- goal(muscle_gain), active.
+exercise(resistance_bands)          :- goal(muscle_gain), joint_problem.
+exercise(yoga)                      :- goal(flexibility), \+ joint_problem.
+exercise(stretching)                :- goal(flexibility), joint_problem.
+exercise(pilates)                   :- goal(core_stability), \+ joint_problem.
+exercise(chair_exercises)           :- goal(core_stability), joint_problem.
+exercise(tai_chi)                   :- goal(stress_relief), joint_problem.
 exercise(deep_breathing_meditation) :- goal(stress_relief), \+ joint_problem.
-exercise(jump_rope)       :- goal(endurance), active, \+ joint_problem.
-exercise(water_aerobics)  :- goal(weight_loss), joint_problem, \+ active.
+exercise(jump_rope)                 :- goal(endurance), active.
+exercise(water_aerobics)            :- goal(weight_loss), joint_problem.
 
 describe(brisk_walking) :-
     step('Brisk walking: 30 minutes a day, 5 days a week.').

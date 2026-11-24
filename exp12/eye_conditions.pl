@@ -32,7 +32,8 @@ hypothesis(glaucoma) :-
     ask('Do you see coloured halos around lights'),
     ask('Do you have eye pain or loss of side vision').
 hypothesis(stye) :-
-    ask('Is there a red, painful lump on the eyelid').
+    ask('Is there a red, painful lump on the eyelid'),
+    ask('Is the eyelid swollen or tender to touch').
 hypothesis(corneal_abrasion) :-
     ask('Did something scratch, hit or enter your eye'),
     ask('Do you experience intense eye pain and light sensitivity').

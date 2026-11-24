@@ -49,7 +49,8 @@ hypothesis(minor_cut) :-
     ask('Is there a small cut or scrape on the skin'),
     ask('Is the bleeding light').
 hypothesis(nosebleed) :-
-    ask('Is blood coming from the nose').
+    ask('Is blood actively flowing from one or both nostrils'),
+    ask('Did it start after trauma, nose picking or dry air').
 
 % First-aid measures for each condition.
 advice(choking) :-

@@ -6,12 +6,13 @@ parent(bob,pat).
 parent(pat,jim).
 
 male(bob).
-female(pam).
 male(tom).
-female(liz).
 male(pat).
-female(ann).
 male(jim).
+
+female(pam).
+female(liz).
+female(ann).
 
 father(X,Y):- parent(X,Y), male(X).
 mother(X,Y):- parent(X,Y), female(X).

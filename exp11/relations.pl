@@ -7,4 +7,4 @@ male(raj).
 female(sanshri).
 female(sabrina).
 brother(X,Y) :- parent(Z,X), parent(Z,Y),male(X), male(Y),dif(X,Y).
-sister(X,Y) :- parent(Z,X), parent(Z,Y),female(X), female(Y),diff(X,Y).
+sister(X,Y) :- parent(Z,X), parent(Z,Y),female(X), female(Y),dif(X,Y).

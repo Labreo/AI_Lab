@@ -92,7 +92,7 @@ def render_terminal_screenshot(terminal_text, font_size=20, line_height=29, pad_
         
     return im
 
-def paginate_code(lines, per_page=62, lookback=15):
+def paginate_code(lines, per_page=80, lookback=25):
     pages = []
     start = 0
     while len(lines) - start > per_page:
@@ -144,23 +144,23 @@ def create_kanak_pdf():
 
     configs = [
         ('exp12/first_aid.pl', [
-            'go.', 'no.', 'no.', 'no.', 'no.', 'no.', 'yes.', 'yes.',
-            'go.', 'no.', 'no.', 'no.', 'no.', 'no.', 'no.', 'no.', 'yes.', 'yes.',
+            'go.', 'Cough unable to speak', 'yes',
+            'go.', 'burn', 'yes',
             'halt.'
         ]),
         ('exp12/nutritional_deficiency.pl', [
-            'go.', 'yes.', 'yes.',
-            'go.', 'no.', 'no.', 'no.', 'no.', 'no.', 'no.', 'no.', 'no.', 'yes.', 'yes.',
+            'go.', 'unusually tired', 'yes',
+            'go.', 'bleeding gums', 'yes',
             'halt.'
         ]),
         ('exp12/fitness_expert.pl', [
-            'go.', 'yes.', 'no.', 'yes.', 'no.', 'no.', 'no.', 'no.', 'no.',
-            'go.', 'no.', 'no.', 'no.', 'no.', 'yes.', 'no.', 'no.',
+            'go.', 'weight loss', 'no', 'no',
+            'go.', 'muscle gain', 'yes', 'no',
             'halt.'
         ]),
         ('exp12/eye_conditions.pl', [
-            'go.', 'yes.', 'yes.',
-            'go.', 'no.', 'no.', 'no.', 'no.', 'no.', 'no.', 'yes.', 'yes.',
+            'go.', 'red and itchy', 'yes',
+            'go.', 'blurred vision', 'yes',
             'halt.'
         ])
     ]
@@ -170,7 +170,7 @@ def create_kanak_pdf():
         with open(script) as f:
             code = f.read().rstrip('\n')
         lines = code.splitlines(keepends=True)
-        chunks = paginate_code(lines, per_page=62, lookback=15)
+        chunks = paginate_code(lines, per_page=80, lookback=25)
         code_imgs = [render_code_single_column(''.join(c).rstrip('\n'), font_size=20, line_height=30) for c in chunks]
         
         # Max width padding for uniform scaling
@@ -225,14 +225,15 @@ def create_writeup_pdf():
     <li><b>User interface:</b> Interactively queries the user for unknown symptoms and displays conclusions alongside recommended advice.</li>
     </ul>
     <p>Prolog is exceptionally well-suited for expert systems because its built-in inference engine naturally performs <b>backward chaining with depth-first search and chronological backtracking</b>. Domain rules and facts form the knowledge base directly. For example, the clause</p>
-    <pre>hypothesis(burn) :- ask('Did the injury come from heat'), ask('Is the skin red or blistered').</pre>
-    <p>reads: <i>"the condition is a burn IF both symptoms are verified true."</i></p>
+    <pre>hypothesis(burn) :- verified(heat_injury), ask(blistered_skin, 'Is the skin red, painful or blistered').</pre>
+    <p>reads: <i>"the condition is a burn IF the initial heat injury is verified AND blistered skin is confirmed."</i></p>
 
     <p><b>Working of the programs.</b> All four expert systems share a robust, standardized design:</p>
     <ul>
-    <li><b>go/0</b> starts consultation. It clears prior working memory, finds the first matching hypothesis (or exercise recommendations), and prints the conclusion with <i>advice/1</i> (or <i>describe/1</i>). If no hypothesis matches, it notifies the user.</li>
-    <li><b>Hypotheses</b> are rules whose bodies consist of ordered <i>ask/1</i> symptom subgoals, arranged from highest medical urgency or prevalence to lowest.</li>
-    <li><b>ask/1</b> first checks working memory (dynamic facts <i>yes/1</i> and <i>no/1</i>). If unknown, it prompts the user, reads the response (<code>yes.</code> or <code>no.</code>), and stores it using <i>assertz/1</i> so questions are never repeated in the same consultation. A negative reply triggers failure and initiates backtracking to subsequent hypotheses.</li>
+    <li><b>go/0</b> starts consultation. It prompts the user to enter their initial observed symptom, condition, or goal directly (with flexible keyword matching for free-form input).</li>
+    <li><b>Hypotheses</b> use <i>verified/1</i> to match the user's initial assertion without interrogating unrelated conditions, then evaluate <i>ask/2</i> to prompt a targeted follow-up question only when relevant.</li>
+    <li><b>ask/2</b> uses dynamic predicates <i>yes/1</i> and <i>no/1</i> as working memory so questions are never repeated in the same consultation.</li>
+    <li><b>Re-assertion fallback:</b> If a condition is unconfirmed (e.g. follow-up answered 'no'), the consultation loop prompts the user to assert another symptom rather than asking arbitrary questions.</li>
     <li><b>undo/0</b> purges cached answers using <i>retractall/1</i> so subsequent sessions start with clean working memory.</li>
     </ul>
 
@@ -249,7 +250,8 @@ def create_writeup_pdf():
     <ol>
     <li>Load the program with SWI-Prolog: <code>swipl &lt;program&gt;.pl</code></li>
     <li>Initiate consultation at prompt: <code>?- go.</code></li>
-    <li>Answer each symptom prompt with <code>yes.</code> or <code>no.</code> (including the full stop).</li>
+    <li>Enter the initial observed symptom, condition, or goal directly (e.g. <code>Cough unable to speak</code>, <code>burn</code>, <code>weight loss</code>, or type <code>list</code>).</li>
+    <li>Answer the targeted follow-up question with <code>yes</code> or <code>no</code>.</li>
     <li>Inspect the diagnostic conclusion and advice. Type <code>halt.</code> to exit.</li>
     </ol>
 

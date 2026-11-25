@@ -1,58 +1,162 @@
-% Expert system: recommend first-aid measures from observed injuries and symptoms.
-% Start with:  ?- go.   and answer each question with yes. or no.
+% Knowledge base: First Aid Diagnostic Expert System
+% Start consultation: ?- go.
 
 :- dynamic yes/1, no/1.
 
+% Main entry point and consultation loop
 go :-
     undo,
     write('First-Aid Expert System'), nl,
-    write('Answer each question with yes. or no.'), nl, nl,
-    (   hypothesis(Injury)
-    ->  format('~nObserved condition: ~w~n', [Injury]),
-        advice(Injury)
-    ;   write('No matching condition found. Please consult a doctor.'), nl
-    ),
-    undo.
+    write('Enter your initial observed symptom or condition (e.g. Cough unable to speak, heavy bleeding, burn, or list):'), nl,
+    consult_loop.
 
-% Hypotheses, tried from the most serious to the least serious.
+consult_loop :-
+    prompt_symptom(Symptom),
+    (   Symptom == exit -> write('Consultation ended.'), nl, undo
+    ;   Symptom == list -> show_symptoms, consult_loop
+    ;   Symptom == none ->
+        write('Unrecognized symptom. Type list to view options, or assert another condition:'), nl,
+        consult_loop
+    ;   assertz(yes(Symptom)),
+        format('Recorded initial symptom: ~w~n~n', [Symptom]),
+        (   hypothesis(Injury)
+        ->  format('~nObserved condition: ~w~n', [Injury]),
+            advice(Injury),
+            undo
+        ;   format('~nNo condition could be confirmed with ~w.~n', [Symptom]),
+            write('Please assert another symptom or condition (or type exit):'), nl,
+            consult_loop
+        )
+    ).
+
+prompt_symptom(Symptom) :-
+    write('|: '),
+    read_line_to_string(user_input, Line),
+    match_symptom(Line, Symptom).
+
+show_symptoms :-
+    nl, write('Available initial symptoms / conditions:'), nl,
+    write('  1. unable_to_speak      (cough, choking, cannot breathe)'), nl,
+    write('  2. heavy_bleeding       (bleeding through cloth)'), nl,
+    write('  3. electric_contact     (electrical wire, outlet contact)'), nl,
+    write('  4. extreme_heat         (heat stroke, hot dry skin)'), nl,
+    write('  5. snake_bite           (venomous reptile or snake bite)'), nl,
+    write('  6. heat_injury          (burn from fire, hot liquid, iron)'), nl,
+    write('  7. severe_pain_fall     (bone fracture after fall or blow)'), nl,
+    write('  8. head_impact          (blow to head, concussion)'), nl,
+    write('  9. joint_swelling       (sprain, twisted ankle or joint)'), nl,
+    write(' 10. chemical_splash      (cleaning chemical or acid in eye)'), nl,
+    write(' 11. small_cut            (minor cut, scrape on skin)'), nl,
+    write(' 12. nose_bleeding        (blood flowing from nostrils)'), nl, nl.
+
+% Keyword mapping for free-form user assertion
+match_symptom(Line, Symptom) :-
+    string_lower(Line, Lower),
+    (   sub_string(Lower, _, _, _, 'exit')        -> Symptom = exit
+    ;   sub_string(Lower, _, _, _, 'quit')        -> Symptom = exit
+    ;   sub_string(Lower, _, _, _, 'list')        -> Symptom = list
+    ;   sub_string(Lower, _, _, _, 'help')        -> Symptom = list
+    ;   sub_string(Lower, _, _, _, 'nose')        -> Symptom = nose_bleeding
+    ;   sub_string(Lower, _, _, _, 'chemical')    -> Symptom = chemical_splash
+    ;   sub_string(Lower, _, _, _, 'concussion')  -> Symptom = head_impact
+    ;   sub_string(Lower, _, _, _, 'head')        -> Symptom = head_impact
+    ;   sub_string(Lower, _, _, _, 'fracture')    -> Symptom = severe_pain_fall
+    ;   sub_string(Lower, _, _, _, 'broken')      -> Symptom = severe_pain_fall
+    ;   sub_string(Lower, _, _, _, 'bone')        -> Symptom = severe_pain_fall
+    ;   sub_string(Lower, _, _, _, 'sprain')      -> Symptom = joint_swelling
+    ;   sub_string(Lower, _, _, _, 'joint')       -> Symptom = joint_swelling
+    ;   sub_string(Lower, _, _, _, 'ankle')       -> Symptom = joint_swelling
+    ;   sub_string(Lower, _, _, _, 'snake')       -> Symptom = snake_bite
+    ;   sub_string(Lower, _, _, _, 'bite')        -> Symptom = snake_bite
+    ;   sub_string(Lower, _, _, _, 'burn')        -> Symptom = heat_injury
+    ;   sub_string(Lower, _, _, _, 'fire')        -> Symptom = heat_injury
+    ;   sub_string(Lower, _, _, _, 'scald')       -> Symptom = heat_injury
+    ;   sub_string(Lower, _, _, _, 'heat_stroke') -> Symptom = extreme_heat
+    ;   sub_string(Lower, _, _, _, 'sun')         -> Symptom = extreme_heat
+    ;   sub_string(Lower, _, _, _, 'electric')    -> Symptom = electric_contact
+    ;   sub_string(Lower, _, _, _, 'shock')       -> Symptom = electric_contact
+    ;   sub_string(Lower, _, _, _, 'speak')       -> Symptom = unable_to_speak
+    ;   sub_string(Lower, _, _, _, 'cough')       -> Symptom = unable_to_speak
+    ;   sub_string(Lower, _, _, _, 'chok')        -> Symptom = unable_to_speak
+    ;   sub_string(Lower, _, _, _, 'cut')         -> Symptom = small_cut
+    ;   sub_string(Lower, _, _, _, 'scrape')      -> Symptom = small_cut
+    ;   sub_string(Lower, _, _, _, 'heavy_bleed') -> Symptom = heavy_bleeding
+    ;   sub_string(Lower, _, _, _, 'bleed')       -> Symptom = heavy_bleeding
+    ;   sub_string(Lower, _, _, _, 'blood')       -> Symptom = heavy_bleeding
+    ;   sub_string(Lower, _, _, _, '12')          -> Symptom = nose_bleeding
+    ;   sub_string(Lower, _, _, _, '11')          -> Symptom = small_cut
+    ;   sub_string(Lower, _, _, _, '10')          -> Symptom = chemical_splash
+    ;   sub_string(Lower, _, _, _, '1')           -> Symptom = unable_to_speak
+    ;   sub_string(Lower, _, _, _, '2')           -> Symptom = heavy_bleeding
+    ;   sub_string(Lower, _, _, _, '3')           -> Symptom = electric_contact
+    ;   sub_string(Lower, _, _, _, '4')           -> Symptom = extreme_heat
+    ;   sub_string(Lower, _, _, _, '5')           -> Symptom = snake_bite
+    ;   sub_string(Lower, _, _, _, '6')           -> Symptom = heat_injury
+    ;   sub_string(Lower, _, _, _, '7')           -> Symptom = severe_pain_fall
+    ;   sub_string(Lower, _, _, _, '8')           -> Symptom = head_impact
+    ;   sub_string(Lower, _, _, _, '9')           -> Symptom = joint_swelling
+    ;   Symptom = none
+    ).
+
+% Working memory verification and interactive questions
+verified(Key) :- yes(Key).
+
+ask(Key, Question) :-
+    (   yes(Key) -> true
+    ;   no(Key)  -> fail
+    ;   format('~w? (yes/no)~n|: ', [Question]),
+        read_reply(Reply),
+        (   Reply == yes -> assertz(yes(Key))
+        ;   assertz(no(Key)), fail
+        )
+    ).
+
+read_reply(Reply) :-
+    read_line_to_string(user_input, Line),
+    string_lower(Line, Lower),
+    (   sub_string(Lower, _, _, _, 'y') -> Reply = yes
+    ;   Reply = no
+    ).
+
+% Diagnostic rules and hypotheses
 hypothesis(choking) :-
-    ask('Is the person unable to speak, breathe, or cough loudly'),
-    ask('Is the person clutching their throat with their hands').
+    verified(unable_to_speak),
+    ask(clutching_throat, 'Is the person clutching their throat with their hands').
 hypothesis(severe_bleeding) :-
-    ask('Is there heavy bleeding that soaks through cloth'),
-    ask('Does the bleeding continue after pressing on the wound').
+    verified(heavy_bleeding),
+    ask(continuous_bleeding, 'Does the bleeding continue after pressing on the wound').
 hypothesis(electric_shock) :-
-    ask('Did the person come into contact with a live electrical source'),
-    ask('Is there numbness, difficulty breathing or visible entry and exit burns').
+    verified(electric_contact),
+    ask(shock_symptoms, 'Is there numbness, difficulty breathing or visible entry and exit burns').
 hypothesis(heat_stroke) :-
-    ask('Has the person been exposed to extreme heat and has hot, dry skin or high fever'),
-    ask('Is the person confused, dizzy or fainting').
+    verified(extreme_heat),
+    ask(heat_fainting, 'Is the person confused, dizzy or fainting').
 hypothesis(snake_bite) :-
-    ask('Was the person bitten by a snake or venomous reptile'),
-    ask('Are there visible puncture marks, severe pain or spreading swelling').
+    verified(snake_bite),
+    ask(bite_swelling, 'Are there visible puncture marks, severe pain or spreading swelling').
 hypothesis(burn) :-
-    ask('Did the injury come from heat, fire or a hot liquid'),
-    ask('Is the skin red, painful or blistered').
+    verified(heat_injury),
+    ask(blistered_skin, 'Is the skin red, painful or blistered').
 hypothesis(fracture) :-
-    ask('Is there severe pain after a fall or a blow'),
-    ask('Is the limb swollen or bent out of shape').
+    verified(severe_pain_fall),
+    ask(deformed_limb, 'Is the limb swollen or bent out of shape').
 hypothesis(concussion) :-
-    ask('Did the person receive a forceful blow or impact to the head'),
-    ask('Is there dizziness, nausea, confusion or brief memory loss').
+    verified(head_impact),
+    ask(concussion_dizziness, 'Is there dizziness, nausea, confusion or brief memory loss').
 hypothesis(sprain) :-
-    ask('Is there swelling or pain around a joint'),
-    ask('Is it painful to move the joint or put weight on it').
+    verified(joint_swelling),
+    ask(joint_movement_pain, 'Is it painful to move the joint or put weight on it').
 hypothesis(chemical_eye_burn) :-
-    ask('Did an acid, alkali or cleaning chemical splash into the eye'),
-    ask('Is there acute burning pain, intense redness and constant tearing').
+    verified(chemical_splash),
+    ask(eye_burning_pain, 'Is there acute burning pain, intense redness and constant tearing').
 hypothesis(minor_cut) :-
-    ask('Is there a small cut or scrape on the skin'),
-    ask('Is the bleeding light').
+    verified(small_cut),
+    ask(light_bleeding, 'Is the bleeding light').
 hypothesis(nosebleed) :-
-    ask('Is blood actively flowing from one or both nostrils'),
-    ask('Did it start after trauma, nose picking or dry air').
+    verified(nose_bleeding),
+    ask(nose_trauma, 'Did it start after trauma, nose picking or dry air').
 
-% First-aid measures for each condition.
+% Treatment recommendations and procedural advice
 advice(choking) :-
     step('Deliver 5 firm back blows between shoulder blades with the heel of your hand.'),
     step('Perform 5 quick inward and upward abdominal thrusts (Heimlich maneuver).'),
@@ -102,19 +206,9 @@ advice(nosebleed) :-
     step('Pinch the soft part of the nose for 10 minutes.'),
     step('Seek medical help if it lasts longer than 20 minutes.').
 
+% Output formatting and working memory cleanup
 step(Text) :-
     format('  - ~w~n', [Text]).
-
-% ask/1 uses stored answers first and asks the user only if the answer is unknown.
-ask(Question) :-
-    (   yes(Question) -> true
-    ;   no(Question)  -> fail
-    ;   format('~w? (yes/no)~n', [Question]),
-        read(Reply),
-        (   Reply == yes -> assertz(yes(Question))
-        ;   assertz(no(Question)), fail
-        )
-    ).
 
 undo :-
     retractall(yes(_)),
